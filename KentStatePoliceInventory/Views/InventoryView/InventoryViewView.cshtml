@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+}
+@using KentStatePoliceInventory.Models
+@model KentStatePoliceInventory.Models.InventoryViewModel
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>KSUPD Analytics</title>
+    <link rel="stylesheet" href="Styles/Main.css">
+    <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+  </head>
+
+  <body>
+    <div class="header">
+      <h2 id="head-title">View Inventory</h2>
+    </div>
+
+    <div id="Table Selector">
+      <select id="table-selector">
+        <option value="Armory">Armory</option>
+        <option value="Third-Floor">Third Floor Room</option>
+        <option value="Canine">Canine Supplies</option>
+        <option value="Cruisers">Cruisers</option>
+      </select>
+    </div>
+
+    <!--Load Data from Selected Table into JSON or whatever-->
+
+    <table id="main-table-display">
+      <tr>
+        <th>Item Name</th>
+	    <th>Item Description</th>
+        <th>Quantity</th>
+		<th>Reorder Quantity</th>
+        <th>Actions</th>
+      </tr>
+    	@foreach (var item in Model.InventoryItems)
+		{
+    	  <tr>
+            <td>@item.ItemName</td>
+    		<td>@item.ItemDescription</td>
+            <td id="@(item.ItemName)-count">@item.ItemQuantity</td>
+    		<td id="@(item.ItemName)-reorder">@item.ItemReorder</td>
+            <td><button id="@(item.ItemName)-plus-one" type="button">+1</button>
+            <button id="@(item.ItemName)-minus-one" type="button">-1</button>
+            <input id="@(item.ItemName)-bulk-number" type="number" placeholder="Bulk Update">
+            <button id="@(item.ItemName)-update" type="button">Update</button></td>
+    	  </tr>
+    	}	  
+    </table>
+
+    <input type='submit' id="submit" value="Submit">
+
+  </body>
+</html>
+
+<script type="text/javascript">
+    $( "#table-selector" ).change(function() {
+        $('#head-title').text($(this).val());
+    });
+
+	$('[id*="plus-one"]').click(function() {
+        var count = parseInt($(this).closest('tr').find("[id*='count']").text());
+	    count++;
+	    $(this).closest('tr').find('[id*="count"]').text(count);
+	});
+
+	$('[id*="minus-one"]').click(function() {
+	    if(parseInt($(this).closest('tr').find("[id*='count']").text()) < 1){
+            alert("Count cannot be less than 0");
+	    }
+	    else{
+            count = parseInt($(this).closest('tr').find("[id*='count']").text());
+            count = count - 1;
+            $(this).closest('tr').find("[id*='count']").text(count);
+
+	        if(parseInt($(this).closest('tr').find("[id*='count']").text()) == parseInt($(this).closest('tr').find("[id*='reorder']").text())){
+                alert("Reorder this item soon");
+	        }
+	    }
+    });
+
+	$('[id*="update"]').click(function() {
+	    if(parseInt($(this).closest('tr').find("[id*='bulk-number']").val()) < 0){
+            alert("Count cannot be less than 0");
+	    }
+	    else{
+            $(this).closest('tr').find("[id*='count']").text(parseInt($(this).closest('tr').find("[id*='bulk-number']").val()));
+	    }
+
+	    if(parseInt($(this).closest('tr').find("[id*='bulk-number']").val()) <= parseInt($(this).closest('tr').find("[id*='reorder']").text())){
+            alert("Reorder this item soon");
+	    }
+	});
+</script>

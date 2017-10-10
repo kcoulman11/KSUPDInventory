@@ -1,0 +1,56 @@
+﻿@{
+    Layout = null;
+}
+@using KentStatePoliceInventory.Models
+@model KentStatePoliceInventory.Models.UserViewModel
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>KSUPD Add/Remove Users</title>
+    <link rel="stylesheet" href="Styles/Main.css">
+    <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+  </head>
+
+  <body>
+    <div class="header">
+      <h2 id="head-title">Kent State Police Department Edit Users</h2>
+    </div>
+
+    <table id="main-table-display">
+        <tr>
+            <th>Officer Name</th>
+			<th>Access Level</th>
+            <th>Badge Number</th>
+			<th>Actions</th>
+		</tr>
+        @foreach (var user in Model.Users)
+		{
+            <tr>
+                <td id="@(user.UserName)-name">@user.UserName</td>
+				<td id="@(user.UserName)-access-level">@user.AccessLevel</td>
+				<td id="@(user.UserName)-badge-number">@user.BadgeId</td>
+				<td>
+					<select id="@(user.UserName)-access-selector">
+						<option value="placeholder" disabled selected>Change Access Level</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Standard">Standard</option>
+                    </select>
+					<button id="@(user.UserName)-remove" type="button">Remove</button>
+				</td>
+			</tr>
+		}
+	</table>
+  </body>
+
+<script type="text/javascript">
+    $('[id*="access-selector"]').change(function() { 
+        $(this).closest('tr').find("[id*='access-level']").text($(this).find(":selected").text() + "*");
+	});
+
+    $('[id*="remove"]').click(function(){
+		if(confirm("Remove " + $(this).closest('tr').find("[id*='name']").text() + "?")){
+            $(this).closest('tr').remove();
+		}
+	});
+</script>

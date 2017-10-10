@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>KSUPD Add/Remove Items</title>
+    <link rel="stylesheet" href="Styles/Main.css">
+    <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+  </head>
+
+  <body>
+    <div class="header">
+      <h2 id="head-title">Kent State Police Department Inventory Add/Remove Items</h2>
+    </div>
+
+	<table id="main-table-display">
+        <tr>
+            <th>Item Name</th>
+            <th>Item Description</th>
+            <th>Actions</th>
+        </tr>
+		@foreach (var item in Model.InventoryItems)
+        {
+          <tr>
+            <td id="@(item.ItemName)-name">@item.ItemName</td>
+            <td id="@(item.ItemName)-description">@item.ItemDescription</td>
+            <td>
+                <button id="@(item.ItemName)-remove" type="button">Remove</button>	
+			</td>
+          </tr>
+        }     
+	</table>
+
+  </body>
+
+<script type="text/javascript">
+    $('[id*="remove"]').click(function(){
+        if(confirm("Remove " + $(this).closest('tr').find("[id*='name']").text() + "?")){
+            $(this).closest('tr').remove();
+        }
+    });
+</script>
+
