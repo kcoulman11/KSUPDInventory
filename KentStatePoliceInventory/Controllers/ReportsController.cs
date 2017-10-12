@@ -10,6 +10,7 @@ namespace KentStatePoliceInventory.Controllers
     {
         public ActionResult Index()
         {
+            
             return View ();
         }
 
