@@ -4,36 +4,37 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>KSUPD Add/Remove Items</title>
     <link rel="stylesheet" href="Styles/Main.css">
     <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="header">
       <h2 id="head-title">Kent State Police Department Inventory Add/Remove Items</h2>
     </div>
 
-	<table id="main-table-display">
+    <table id="main-table-display">
         <tr>
             <th>Item Name</th>
             <th>Item Description</th>
             <th>Actions</th>
         </tr>
-		@foreach (var item in Model.InventoryItems)
+    	@foreach (var item in Model.InventoryItems)
         {
           <tr>
             <td id="@(item.ItemName)-name">@item.ItemName</td>
             <td id="@(item.ItemName)-description">@item.ItemDescription</td>
             <td>
                 <button id="@(item.ItemName)-remove" type="button">Remove</button>	
-			</td>
+    		</td>
           </tr>
         }     
-	</table>
+    </table>
 
-  </body>
+    <button id="add" type="button">Add New Item</button>  
+</body>
 
 <script type="text/javascript">
     $('[id*="remove"]').click(function(){
