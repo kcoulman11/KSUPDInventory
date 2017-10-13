@@ -8,52 +8,53 @@
 <html>
   <head>
     <title>KSUPD Analytics</title>
-    <link rel="stylesheet" href="Styles/Main.css">
+    <link rel="stylesheet" href="~/Styles/Main.css">
     <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
   </head>
 
-  <body>
-    <div class="header">
-      <h2 id="head-title">View Inventory</h2>
-    </div>
+    <form action="InventoryView/UpdateQuantities" method="POST">
+      <body>
+        <div class="header">
+          <h2 id="head-title">View Inventory</h2>
+        </div>
 
-    <div id="Table Selector">
-      <select id="table-selector">
-        <option value="Armory">Testing</option>
-        <option value="Third-Floor">Third Floor Room</option>
-        <option value="Canine">Canine Supplies</option>
-        <option value="Cruisers">Cruisers</option>
-      </select>
-    </div>
+        <div id="Table Selector">
+          <select id="table-selector">
+            <option value="Armory">Testing</option>
+            <option value="Third-Floor">Third Floor Room</option>
+            <option value="Canine">Canine Supplies</option>
+            <option value="Cruisers">Cruisers</option>
+          </select>
+        </div>
 
-    <!--Load Data from Selected Table into JSON or whatever-->
+        <!--Load Data from Selected Table into JSON or whatever-->
 
-    <table id="main-table-display">
-      <tr>
-        <th>Item Name</th>
-	    <th>Item Description</th>
-        <th>Quantity</th>
-		<th>Reorder Quantity</th>
-        <th>Actions</th>
-      </tr>
-    	@foreach (var item in Model.InventoryItems)
-		{
-    	  <tr>
-            <td>@item.ItemName</td>
-    		<td>@item.ItemDescription</td>
-            <td id="@(item.ItemName)-count">@item.ItemQuantity</td>
-    		<td id="@(item.ItemName)-reorder">@item.ItemReorder</td>
-            <td><button id="@(item.ItemName)-plus-one" type="button">+1</button>
-            <button id="@(item.ItemName)-minus-one" type="button">-1</button>
-            <input id="@(item.ItemName)-bulk-number" type="number" placeholder="Bulk Update">
-            <button id="@(item.ItemName)-update" type="button">Update</button></td>
-    	  </tr>
-    	}	  
-    </table>
-
-    <input type='submit' id="submit" value="Submit">
-
-  </body>
+        <table id="main-table-display">
+          <tr>
+            <th>Item Name</th>
+    	    <th>Item Description</th>
+            <th>Quantity</th>
+    		<th>Reorder Quantity</th>
+            <th>Actions</th>
+          </tr>
+        	@foreach (var item in Model.InventoryItems)
+    		{
+        	  <tr>
+                <td>@item.ItemName</td>
+        		<td>@item.ItemDescription</td>
+                <td id="@(item.ItemName)-count">@item.ItemQuantity</td>
+        		<td id="@(item.ItemName)-reorder">@item.ItemReorder</td>
+                <td><button id="@(item.ItemName)-plus-one" type="button">+1</button>
+                <button id="@(item.ItemName)-minus-one" type="button">-1</button>
+                <input id="@(item.ItemName)-bulk-number" type="number" placeholder="Bulk Update">
+                <button id="@(item.ItemName)-update" type="button">Update</button></td>
+        	  </tr>
+        	}	  
+        </table>
+        <input type="text" name="valueINeed">
+        <button type="submit">Save</button>
+      </body>
+    </form>
 </html>
 
 <script type="text/javascript">

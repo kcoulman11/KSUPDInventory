@@ -14,5 +14,15 @@ namespace KentStatePoliceInventory.Controllers
             InventoryViewModel model = new InventoryViewModel();
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult UpdateQuantities(string valueINeed)
+        {
+            //do what is necessary with the valueINeed to save it back to db
+
+            InventoryViewModel model = new InventoryViewModel();
+            model.InventoryItems.First().ItemDescription = valueINeed;
+            return View("/Views/InventoryView/InventoryViewView.cshtml", model);
+        }       
     }
 }
