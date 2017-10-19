@@ -113,6 +113,7 @@
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\AddRemoveItemsModel.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Classes\MethodStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />
@@ -177,6 +178,8 @@
     <Content Include="Content\themes\base\autocomplete.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-3.2.1.slim.min.map" />

@@ -9,9 +9,9 @@ namespace KentStatePoliceInventory.Models
         public UserViewModel()
         {
             Users = new List<User>();
-            User newUser = new User("Officer Steve", "Admin", 123456);
-            User newUser1 = new User("Officer Rick", "Admin", 696969);
-            User newUser2 = new User("Officer Tone", "Admin", 113824);
+            User newUser = new User("Officer Steve", "Administrator", 123456);
+            User newUser1 = new User("Officer Rick", "Administrator", 528248);
+            User newUser2 = new User("Officer Tone", "Administrator", 113824);
             User newUser3 = new User("Officer Andreas", "Standard", 395717);
             Users.Add(newUser);
             Users.Add(newUser1);
