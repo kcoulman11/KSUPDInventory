@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using KentStatePoliceInventory.Models;
+using KentStatePoliceInventory.Classes;
 
 namespace KentStatePoliceInventory.Controllers
 {
@@ -16,13 +17,38 @@ namespace KentStatePoliceInventory.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateQuantities(string valueINeed)
+        public JsonResult UpdateQuantities(string ItemName, int ItemQuantity)
         {
-            //do what is necessary with the valueINeed to save it back to db
+            MethodStatus status = new MethodStatus();
 
-            InventoryViewModel model = new InventoryViewModel();
-            model.InventoryItems.First().ItemDescription = valueINeed;
-            return View("/Views/InventoryView/InventoryViewView.cshtml", model);
+            //using (SqlConnection connection = new SqlConnection("ConnectionStringHere"))
+            //{
+            //    using (SqlCommand command = new SqlCommand())
+            //    {
+            //        command.Connection = connection;            // <== lacking
+            //        command.CommandType = CommandType.Text;
+            //        command.CommandText = "INSERT into tbl_staff (staffName, userID, idDepartment) VALUES (@staffName, @userID, @idDepart)";
+            //        command.Parameters.AddWithValue("@staffName", name);
+            //        command.Parameters.AddWithValue("@userID", userId);
+            //        command.Parameters.AddWithValue("@idDepart", idDepart);
+
+            //        try
+            //        {
+            //            connection.Open();
+            //            int recordsAffected = command.ExecuteNonQuery();
+            //        }
+            //        catch (SqlException)
+            //        {
+            //            // error here
+            //        }
+            //        finally
+            //        {
+            //            connection.Close();
+            //        }
+            //    }
+            //}
+
+            return Json(status, JsonRequestBehavior.DenyGet);
         }       
     }
 }

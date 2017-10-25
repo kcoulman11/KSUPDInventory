@@ -8,6 +8,10 @@
     <title>KSUPD Add/Remove Items</title>
     <link rel="stylesheet" href="Styles/Main.css">
     <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -36,11 +40,84 @@
     <button id="add" type="button">Add New Item</button>  
 </body>
 
+<div id="add-item-dialog" title="Add New Item">
+    <h3>Item Name</h3>
+	<input id="new-item-name" type="text">
+    <h3>Item Description</h3>
+    <input id="new-item-description" type="text">
+	<h3>Current Quantity</h3>
+    <input  id="new-item-quantity" type="text">
+	<h3>Reorder Notification Quantity</h3>
+    <input id="new-item-reorder" type="text">
+	<br>
+	<button id="add-item-submit" type="button">Submit</button>
+</div>
+	
 <script type="text/javascript">
     $('[id*="remove"]').click(function(){
+		var currentRow = $(this);
         if(confirm("Remove " + $(this).closest('tr').find("[id*='name']").text() + "?")){
-            $(this).closest('tr').remove();
+		    var itemToRemove = $(this).closest('tr').find("[id*='name']").text();
+
+            $.ajax({
+                dataType: "json",
+                data: {
+                    ItemName: itemToRemove,
+                },
+                url: '@Url.Action("RemoveItem")',
+                type: 'POST',
+                success: function (result) {
+                    alert('Item successfully removed');
+                    currentRow.closest('tr').remove();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("FAIL. GIT GUD SON");
+                }
+            });
         }
     });
+
+    $('#add-item-dialog').dialog({
+        autoOpen: false
+    });
+		
+    $('#add').click(function() {
+		//Clear values in the dialog
+		$('#new-item-name').val("");
+		$('#new-item-description').val("");
+		$('#new-item-quantity').val("");
+		$('#new-item-reorder').val("");
+
+		//Open the dialog
+        $('#add-item-dialog').dialog('open');
+        return false;
+    });
+
+	$('#add-item-submit').click(function() {
+        var newItemName = $('#new-item-name').val();
+        var newItemDescription = $('#new-item-description').val();
+        var newItemQuantity = $('#new-item-quantity').val();
+        var newItemReorder = $('#new-item-reorder').val();
+
+        $.ajax({
+            dataType: "json",
+            data: {
+                ItemName: newItemName,
+                ItemQuantity: parseInt(newItemQuantity),
+                ItemReorder: parseInt(newItemReorder),
+                ItemDescription: newItemDescription 
+            },
+            url: '@Url.Action("AddNewItem")',
+            type: 'POST',
+            success: function (result) {
+                alert('New item successfully added');
+                $('#add-item-dialog').dialog('close');
+                location.reload(); // reload page to update data and table
+    		},
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("FAIL. GIT GUD SON");
+            }
+        });
+    })
 </script>
 

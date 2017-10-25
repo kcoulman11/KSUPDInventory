@@ -27,6 +27,15 @@ namespace KentStatePoliceInventory
 				action = "InventoryViewView"
 			});
 
+            routes.MapRoute(
+                "InventoryView_",
+                "UpdateQuantities",
+            new
+            {
+                controller = "InventoryView",
+                action = "InventoryViewView"
+            });
+
 			routes.MapRoute(
 				"ItemsView",
 				"ItemsView",
