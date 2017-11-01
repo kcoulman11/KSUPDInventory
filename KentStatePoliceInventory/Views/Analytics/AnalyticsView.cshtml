@@ -16,8 +16,26 @@
     <div class="header">
       <h2 id="head-title">Kent State Police Department Inventory Analytics</h2>
     </div>
-    testingtestingtesttesting
+    Test the database connection.
+		<td><button id="test" type="button">Test</button></td>
+		
     <!-- Fancy D3 graphs go here -->
   </body>
 
+<script type="text/javascript">
 
+		$(document).ready(function(){
+        
+		    $('#test').click(function() {
+                alert("I've been Clicked");
+                location.href = '@Url.Action("Button1_Click", "Analytics")';
+		        
+            });
+		
+		});
+
+
+</script>
+
+
+	
