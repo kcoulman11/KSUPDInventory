@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using KentStatePoliceInventory.Classes;
+using System.Data.SqlClient;
 
 namespace KentStatePoliceInventory.Models
 {
@@ -8,17 +9,83 @@ namespace KentStatePoliceInventory.Models
     {
         public AddRemoveItemsModel()
         {
-            InventoryItems = new List<InventoryItem>();
-            InventoryItem NewInvenItem = new InventoryItem("Flare", 350, 100, "Road-Side Flares");
-            InventoryItems.Add(NewInvenItem);
-            InventoryItem NewInvenItem1 = new InventoryItem("Shovel", 20, 10, "Shovels");
-            InventoryItems.Add(NewInvenItem1);
-            InventoryItem NewInvenItem2 = new InventoryItem("Gun", 999999, 1000, "9mm Pistol");
-            InventoryItems.Add(NewInvenItem2);
-            InventoryItem NewInvenItem3 = new InventoryItem("9mm Rounds", 58657, 10000, "Ammunition for 9mm");
-            InventoryItems.Add(NewInvenItem3);
+          InventoryItems = new List<InventoryItem>();
+          SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+          try
+          {
+              conn.Open();
+              string query = "SELECT * FROM Inventory";
+              using (SqlCommand command = new SqlCommand(query, conn))
+              {
+                  using (SqlDataReader reader = command.ExecuteReader())
+                  {
+                      while (reader.Read())
+                      {
+                          string ItemName = reader.GetString(reader.GetOrdinal("ItemName"));
+                          int ItemQuantity = reader.GetInt32(reader.GetOrdinal("InventoryQuantity"));
+                          int ItemReorder = reader.GetInt32(reader.GetOrdinal("InventoryReorderQuantity"));
+                          string ItemDescription = reader.GetString(reader.GetOrdinal("InventoryDescription"));
+                          InventoryItem item = new InventoryItem(ItemName, ItemQuantity, ItemReorder, ItemDescription);
+                          InventoryItems.Add(item);
+                      }
+                  }
+              }
+              
+          }
+          catch (Exception ex)
+          {
+                InventoryItem NewInvenItem = new InventoryItem("failed to load form server", 0, 0, "fail");
+                InventoryItems.Add(NewInvenItem);
+          }
+
+            Locations = new List<Location>();
+            SqlConnection conn2 = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            try
+            {
+                conn2.Open();
+                string query = "SELECT * FROM InventoryLocation";
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string LocationName = reader.GetString(reader.GetOrdinal("InventoryLocationDescription"));
+                            Locations.Add(new Location(LocationName));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Locations.Add(new Location("failed"));
+            }
+
+            InventoryTypes = new List<string>();
+            SqlConnection conn3 = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            try
+            {
+                conn3.Open();
+                string query = "SELECT * FROM InventoryType";
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            InventoryTypes.Add(reader.GetString(reader.GetOrdinal("InventoryTypeDescription")));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Locations.Add(new Location("failed"));
+            }
         }
 
         public List<InventoryItem> InventoryItems { get; set; }
+        public List<Location> Locations { get; set; }
+        public List<string> InventoryTypes { get; set; }
     }
 }

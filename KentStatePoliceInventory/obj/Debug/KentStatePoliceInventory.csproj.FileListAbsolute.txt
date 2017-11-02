@@ -178,3 +178,44 @@
 /Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/obj/Debug/KentStatePoliceInventory.csproj.CoreCompileInputs.cache
 /Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/obj/Debug/KentStatePoliceInventory.dll
 /Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/obj/Debug/KentStatePoliceInventory.pdb
+/Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/bin/MySql.Data.dll
+/Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/bin/MySql.Web.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\KentStatePoliceInventory.dll.config
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\KentStatePoliceInventory.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\KentStatePoliceInventory.pdb
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\EntityFramework.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\EntityFramework.SqlServer.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\MySql.Data.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\MySql.Web.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\Newtonsoft.Json.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Data.SQLite.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Data.SQLite.EF6.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Data.SQLite.Linq.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Net.Http.Formatting.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Helpers.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Http.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Http.WebHost.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Mvc.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Razor.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.WebPages.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.WebPages.Razor.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Razor.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Helpers.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.WebPages.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.WebPages.Razor.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Mvc.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Net.Http.Formatting.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Http.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Web.Http.WebHost.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\Newtonsoft.Json.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\EntityFramework.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\EntityFramework.SqlServer.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Data.SQLite.xml
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\System.Data.SQLite.dll.config
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.csprojResolveAssemblyReference.cache
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.csproj.CoreCompileInputs.cache
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.pdb

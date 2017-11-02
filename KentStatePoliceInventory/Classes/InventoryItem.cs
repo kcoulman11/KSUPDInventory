@@ -15,10 +15,23 @@ namespace KentStatePoliceInventory.Classes
             ItemDescription = description;
             ItemReorder = reorder;
         }
+        public InventoryItem(string name, int quantity, int reorder, string description, int typeid, int locationid, int itemid)
+        {
+          ItemName = name;
+          ItemQuantity = quantity;
+          ItemDescription = description;
+          ItemReorder = reorder;
+          TypeId = typeid;
+          LocationId = locationid;
+          ItemId = itemid;
+        }
 
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
+        public int ItemId { get; set; }
         public int ItemQuantity { get; set; }
         public int ItemReorder { get; set; }
+        public int TypeId { get; set;}
+        public int LocationId { get; set; }
     }
 }
