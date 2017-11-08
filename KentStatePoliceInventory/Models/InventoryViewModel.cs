@@ -10,7 +10,8 @@ namespace KentStatePoliceInventory.Models
         public InventoryViewModel()
         {
             InventoryItems = new List<InventoryItem>();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();
@@ -36,8 +37,9 @@ namespace KentStatePoliceInventory.Models
               InventoryItem NewInvenItem = new InventoryItem("Failed to connect to sql server", 0, 0, "contact administrator");
               InventoryItems.Add(NewInvenItem);
             }
+
             Locations = new List<Location>();
-            SqlConnection conn2 = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            SqlConnection conn2 = new SqlConnection(config.ConnectionString());
             try
             {
                 conn2.Open();

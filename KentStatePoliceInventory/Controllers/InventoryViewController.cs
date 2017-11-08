@@ -21,8 +21,8 @@ namespace KentStatePoliceInventory.Controllers
         public JsonResult UpdateQuantities(string ItemName, int ItemQuantity)
         {
             MethodStatus status = new MethodStatus();
-
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();
@@ -52,7 +52,8 @@ namespace KentStatePoliceInventory.Controllers
             List<Location> Locations = new List<Location>();
             List<InventoryItem> Items = new List<InventoryItem>();
             List<InventoryItem> FinalItems = new List<InventoryItem>();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
               conn.Open();
@@ -113,32 +114,138 @@ namespace KentStatePoliceInventory.Controllers
             return Json(status, JsonRequestBehavior.DenyGet);
         }
 
-        public JsonResult IssueItem(string issuedTo, string quantity)
+        public JsonResult IssueItem(string issuedTo, int quantity, string itemName)
         {
             MethodStatus status = new MethodStatus();
-
-            int QuantityUpdate = Int32.Parse(quantity);
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            int QuantityUpdate = quantity;
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();
-                int inventoryId = 1;
-                int issuedToId = 1;
-                string cmdString = "INSERT INTO Issued (IssuedQuantity,IssuedDate,InventoryID,IssuedToID) VALUES (@val1, @val2, @val3, @val4)";
-                using (SqlCommand comm = new SqlCommand(cmdString, conn))
+                int inventoryId = -1;
+                int issuedToId = -1;
+                bool IssuedAlreadyExists = false;
+                string query = "SELECT * FROM Inventory"; // get all items
+                using (SqlCommand command = new SqlCommand(query, conn))
                 {
-                    comm.CommandText = cmdString;
-                    comm.Parameters.AddWithValue("@val1", quantity);
-                    comm.Parameters.AddWithValue("@val2", DateTime.Now.ToShortDateString());
-                    comm.Parameters.AddWithValue("@val3", inventoryId);
-                    comm.Parameters.AddWithValue("@val4", issuedToId);
-                    comm.ExecuteNonQuery();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string ItemName = reader.GetString(reader.GetOrdinal("ItemName"));
+                            int ItemID = (int)reader.GetInt64(reader.GetOrdinal("InventoryID"));
+                            if(ItemName == itemName)
+                            {
+                                inventoryId = ItemID; // get item id for issued to
+                            }
+                        }
+                    }
                 }
+                query = "SELECT * FROM IssuedTo"; // get all issuedtolocations
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string description = reader.GetString(reader.GetOrdinal("IssuedToDescription"));
+                            int locationId = (int)reader.GetInt64(reader.GetOrdinal("IssuedToID"));
+                            if (description == issuedTo)
+                            {
+                                issuedToId = locationId; // get location id for issued to
+                            }
+                        }
+                    }
+                }
+                query = "SELECT * FROM Issued"; // check if row already exists that matches itemID & issuedToID
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int issuedId = (int)reader.GetInt64(reader.GetOrdinal("IssuedToID"));
+                            int itemID = (int)reader.GetInt64(reader.GetOrdinal("InventoryID"));
+                            if (itemID == inventoryId && issuedId == issuedToId)
+                            {
+                                IssuedAlreadyExists = true; // record with this item/location already exists
+                            }
+                        }
+                    }
+                }
+                if (!IssuedAlreadyExists) // location/item combination do not exist in the DB, so add a new row with them
+                {
+                    string insertString = "INSERT INTO Issued (IssuedQuantity,IssuedDate,InventoryID,IssuedToID) VALUES (@val1, @val2, @val3, @val4)";
+                    using (SqlCommand comm = new SqlCommand(insertString, conn))
+                    {
+                        comm.CommandText = insertString;
+                        comm.Parameters.AddWithValue("@val1", quantity);
+                        comm.Parameters.AddWithValue("@val2", DateTime.Now.ToShortDateString());
+                        comm.Parameters.AddWithValue("@val3", inventoryId);
+                        comm.Parameters.AddWithValue("@val4", issuedToId);
+                        comm.ExecuteNonQuery();
+                    }
+                }
+                else // find current quantity, add new issued quantity to it, update table accordingly
+                {
+                    int oldQuantity = -1;
+                    int newQuantity = -1;
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM Issued WHERE InventoryID =" + inventoryId + "AND IssuedToID =" + issuedToId, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int ItemID = (int)reader.GetInt64(reader.GetOrdinal("InventoryID"));
+                                int locationId = (int)reader.GetInt64(reader.GetOrdinal("IssuedToID"));
+                                if(ItemID == inventoryId && locationId == issuedToId)
+                                {
+                                    oldQuantity = (int)reader.GetInt32(reader.GetOrdinal("IssuedQuantity"));
+                                    newQuantity = oldQuantity + quantity;
+                                }
+                            }
+                        }
+                    }
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Issued SET IssuedQuantity=@quantity" + " WHERE InventoryID=@ItemId AND IssuedToID=@LocationID", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@quantity", newQuantity);
+                        cmd.Parameters.AddWithValue("@ItemId", inventoryId);
+                        cmd.Parameters.AddWithValue("@LocationID", issuedToId);
+
+                        int rows = cmd.ExecuteNonQuery();
+                    }
+                }
+                int originalQuantity = -1;
+                int updatedQuantity = -1;
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Inventory WHERE InventoryID =" + inventoryId, conn)) // Get Old quantity and calculate new quantity
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int ItemID = (int)reader.GetInt64(reader.GetOrdinal("InventoryID"));
+                            if (ItemID == inventoryId)
+                            {
+                                originalQuantity = (int)reader.GetInt32(reader.GetOrdinal("InventoryQuantity"));
+                                updatedQuantity = originalQuantity - quantity;
+                            }
+                        }
+                    }
+                }
+                using (SqlCommand cmd = new SqlCommand("UPDATE Inventory SET InventoryQuantity=@quantity" + " WHERE InventoryID=@ItemId", conn))
+                {
+                    cmd.Parameters.AddWithValue("@ItemId", inventoryId);
+                    cmd.Parameters.AddWithValue("@quantity", updatedQuantity);
+                    int rows = cmd.ExecuteNonQuery();
+                }
+
             }
             catch(Exception ex)
             {
                 status.Message = ex.Message; 
             }
+            conn.Close();
             return Json(status, JsonRequestBehavior.DenyGet);
         }
     }

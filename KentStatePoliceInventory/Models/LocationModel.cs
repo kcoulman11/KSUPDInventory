@@ -17,7 +17,8 @@ namespace KentStatePoliceInventory.Models
         public LocationModel()
         {
             Locations = new List<Location>();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();

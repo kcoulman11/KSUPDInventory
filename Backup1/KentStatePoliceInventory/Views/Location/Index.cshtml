@@ -1,0 +1,130 @@
+﻿@model KentStatePoliceInventory.Models.LocationModel
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>KSUPD Add/Remove Users</title>
+  <link rel="stylesheet" href="Styles/Main.css">
+  <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body>
+  <div class="header">
+    <h2 id="head-title">Kent State Police Department Edit Locations</h2>
+  </div>
+
+  <table id="main-table-display">
+    <tr>
+      <th>Location Name</th>
+      <th>Actions</th>
+    </tr>
+    @foreach (var location in Model.Locations)
+	  {
+        <tr>
+          <td class="table-item" id="@(location.LocationName)-name">@location.LocationName</td>
+          <td>
+            <button id="@(location.LocationName)-remove" class="updateButton" type="button">Remove</button>
+          </td>
+        </tr>
+    }
+  </table>
+  <div style="margin-left: 33%; margin-right: 40%">
+            <button id="add" type="button" style="width: 500px; height: 30px; font-size: 115%">Add New Building Location</button>
+  </div>
+
+  <br />
+
+  <table id="main-table-display">
+    <tr>
+      <th>Location Name</th>
+      <th>Actions</th>
+    </tr>
+    @foreach (var IssuedToLocation in Model.IssuedToList)
+    {
+        <tr>
+          <td class="table-item" id="@(IssuedToLocation.LocationName)-name">@IssuedToLocation.LocationName</td>
+          <td>
+            <button id="@(IssuedToLocation.LocationName)-remove" class="updateButton" type="button">Remove</button>
+          </td>
+        </tr>
+    }
+  </table>
+  <div style="margin-left: 33%; margin-right: 40%">
+            <button id="issued-add" type="button" style="width: 500px; height: 30px; font-size: 115%">Add New Issue To Location</button>
+  </div>
+
+
+  <br />
+    <div id="add-location-dialog" title="Add New Location">
+        <h3>Location Name</h3>
+        <input id="new-location-name" type="text">
+        <br><br><br>
+        <button id="new-location-submit" type="button">Submit</button>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+  $('[id*="access-selector"]').change(function() {
+    $(this).closest('tr').find("[id*='access-level']").text($(this).find(":selected").text() + "*");
+  });
+
+  $('[id*="remove"]').click(function() {
+    var currentRow = $(this);
+    if (confirm("Remove " + $(this).closest('tr').find("[id*='name']").text() + "?")) {
+      var locationToRemove = $(this).closest('tr').find("[id*='name']").text();
+
+      $.ajax({
+        dataType: "json",
+        data: {
+          locationName: locationToRemove,
+        },
+        url: '@Url.Action("RemoveLocation")',
+        type: 'POST',
+        success: function(result) {
+          alert('Location successfully removed');
+          location.reload();
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert("FAIL. GIT GUD SON");
+        }
+      });
+    }
+  });
+
+  $('#add-location-dialog').dialog({
+    autoOpen: false
+  });
+
+  $('#add').click(function() {
+    $('#new-location-name').val("");
+    $('#add-location-dialog').dialog('open');
+    return false;
+  });
+
+  $('#new-location-submit').click(function() {
+    var newLocationName = $('#new-location-name').val();
+
+    $.ajax({
+      dataType: "json",
+      data: {
+        locationName: newLocationName,
+      },
+      url: '@Url.Action("AddNewLocation")',
+      type: 'POST',
+      success: function(result) {
+        alert('New location successfully added');
+        $('#add-location-dialog').dialog('close');
+        location.reload(); // reload page to update data and table
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert("FAIL. GIT GUD SON");
+      }
+    });
+  })
+</script>

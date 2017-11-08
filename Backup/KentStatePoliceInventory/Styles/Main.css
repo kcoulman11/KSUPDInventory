@@ -1,0 +1,84 @@
+﻿body {
+    background-color: black;
+    color: silver;
+}
+
+#head-title{
+    text-align: center;
+    color: silver;
+}
+
+
+
+#login {
+    margin: 0;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+input[type="button"] {
+    width: 300px;
+    height: 100px;
+    display: inline-block;
+    margin-left: 35px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border: none;
+    margin-top: 25px;
+    font-size: 115%;
+}
+
+#main-table-display {
+    text-align: center;
+}
+
+#main-table-display > tbody > tr > th {
+        color: silver;
+        border-style: solid;
+        border-width: 2px;
+        border-color: silver;
+        padding-left: 10px;
+        padding-right: 10px;
+}
+
+.inventoryButton {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  font-size: 115%;
+}
+
+.updateButton {
+    width: 100px;
+    height: 30px;
+    display: inline-block;
+    font-size: 115%;
+}
+
+.addUserButton{
+  width: 500px;
+  height: 30px;
+  position: fixed;
+  bottom: 100%;
+  right: 100%;
+  font-size: 115%;
+}
+
+.bulkNumber {
+    width: 150px;
+    height: 30px;
+    display: inline-block;
+    font-size: 115%;
+}
+
+.table-item{
+    font-size: 150%;
+}
+
+#main-table-display{
+  width: 80%;
+  margin: auto;
+}

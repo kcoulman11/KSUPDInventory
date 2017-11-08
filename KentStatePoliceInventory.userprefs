@@ -1,24 +1,15 @@
 ﻿<Properties StartupConfiguration="{3D875B45-8519-4718-A34B-8D1E4F85D052}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="KSUPDInventory Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KentStatePoliceInventory/Views/InventoryView/InventoryViewView.cshtml">
     <Files>
-      <File FileName="KentStatePoliceInventory/Views/Home/Index.cshtml" Line="49" Column="42" />
-      <File FileName="KentStatePoliceInventory/Views/InventoryView/InventoryViewView.cshtml" Line="100" Column="35" />
-      <File FileName="KentStatePoliceInventory/Controllers/LocationController.cs" Line="1" Column="1" />
-      <File FileName="KentStatePoliceInventory/Views/Items/ItemsView.cshtml" Line="131" Column="33" />
-      <File FileName="KentStatePoliceInventory/Models/LocationModel.cs" Line="36" Column="53" />
-      <File FileName="KSUPDInventory Status" />
-      <File FileName="KentStatePoliceInventory/Controllers/InventoryViewController.cs" Line="92" Column="16" NotebookId="1" />
-      <File FileName="KentStatePoliceInventory/Classes/Location.cs" Line="25" Column="2" NotebookId="1" />
-      <File FileName="KentStatePoliceInventory/Controllers/ItemsController.cs" Line="44" Column="1" NotebookId="1" />
+      <File FileName="KentStatePoliceInventory/Classes/Configuration.cs" Line="26" Column="1" />
+      <File FileName="KentStatePoliceInventory/Controllers/InventoryViewController.cs" Line="127" Column="36" />
+      <File FileName="KentStatePoliceInventory/Views/InventoryView/InventoryViewView.cshtml" Line="7" Column="25" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.KentStatePoliceInventory PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/Controllers/LocationController.cs" relfile="KentStatePoliceInventory/Controllers/LocationController.cs" line="65" column="1" />
-      <Breakpoint file="/Users/Kevin/Google Drive/Programs/Capstone/KSUPDInventory/KentStatePoliceInventory/Controllers/InventoryViewController.cs" relfile="KentStatePoliceInventory/Controllers/InventoryViewController.cs" line="98" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

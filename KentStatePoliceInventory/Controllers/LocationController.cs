@@ -24,9 +24,9 @@ namespace KentStatePoliceInventory.Controllers
             MethodStatus status = new MethodStatus();
             Random random = new Random();
             int randomNumber = random.Next(0, 100);
-
+            Configuration config = new Configuration();
             List<InventoryItem> InventoryItems = new List<InventoryItem>();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();
@@ -46,10 +46,41 @@ namespace KentStatePoliceInventory.Controllers
         }
 
         [HttpPost]
+        public JsonResult AddIssue(string locationName, int issuedType)
+        {
+            MethodStatus status = new MethodStatus();
+            Random random = new Random();
+            int randomNumber = random.Next(0, 100);
+            Configuration config = new Configuration();
+            List<InventoryItem> InventoryItems = new List<InventoryItem>();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
+            try
+            {
+                conn.Open();
+                string sql = "INSERT INTO Issuedto(IssuedToDescription,IssuedToTypeID) VALUES(@param1,@param2)";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add("@param1", SqlDbType.VarChar, 50).Value = locationName;
+                cmd.Parameters.Add("@param2", SqlDbType.Int).Value = issuedType;
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                status.success = false;
+                status.Message = ex.InnerException.ToString();
+            }
+
+            return Json(status, JsonRequestBehavior.DenyGet);
+        }
+
+
+        [HttpPost]
         public JsonResult RemoveLocation(string locationName)
         {
             MethodStatus status = new MethodStatus();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 using (var cmd = conn.CreateCommand())
@@ -68,5 +99,32 @@ namespace KentStatePoliceInventory.Controllers
 
             return Json(status, JsonRequestBehavior.DenyGet);
         }
+
+        [HttpPost]
+        public JsonResult RemoveIssue(string locationName)
+        {
+            MethodStatus status = new MethodStatus();
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
+            try
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    conn.Open();
+                    cmd.CommandText = "DELETE FROM IssuedTo WHERE IssuedToDescription = @word";
+                    cmd.Parameters.AddWithValue("@word", locationName);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                status.success = false;
+                status.Message = "Items issued to location must be removed";
+
+            }
+
+            return Json(status, JsonRequestBehavior.DenyGet);
+        }
+
     }
 }

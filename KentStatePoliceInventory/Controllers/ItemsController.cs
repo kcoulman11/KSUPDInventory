@@ -23,35 +23,47 @@ namespace KentStatePoliceInventory.Controllers
             MethodStatus status = new MethodStatus();
             int location = -1;
             List<Location> Locations = new List<Location>();
-            SqlConnection conn1 = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn1 = new SqlConnection(config.ConnectionString());
             try
             {
                 conn1.Open();
-                string query1 = "SELECT * FROM InventoryLocation";
+                string query1 = "SELECT InventoryLocationID FROM InventoryLocation WHERE InventoryLocationDescription=@location";
                 using (SqlCommand command = new SqlCommand(query1, conn1))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        int id = reader.GetInt32(reader.GetOrdinal("InventoryLocationID"));
-                        string description = reader.GetString(reader.GetOrdinal("InventoryLocationDescription"));
-                        Locations.Add(new Location(description, id)); 
-                    }
+                    //command.Parameters.AddWithValue("@location", ItemLocation);
+                    //string id = Convert.ToString(command.ExecuteScalar());
+                    command.CommandText = "SELECT InventoryLocationID FROM InventoryLocation WHERE InventoryLocationDescription=@location";
+                    command.Parameters.AddWithValue("@location", ItemLocation);
+                    string str = Convert.ToString(command.ExecuteScalar());
+                    location = Int32.Parse(str);
+                    //using (SqlDataReader reader = command.ExecuteReader())
+                    //{
+                    //    //int id = (int)reader.GetInt64(reader.GetOrdinal("InventoryLocationID"));
+                    //    //string description = reader.GetString(reader.GetOrdinal("InventoryLocationDescription"));
+                    //    if (reader.Read())
+                    //    {
+                    //        int
+                    Locations.Add(new Location(ItemLocation, location));
+                    //    }
+                    //}
                 }
                 /*
                 query1 = "SELECT * FROM InventoryType";
-                using (SqlCommand command = new SqlCommand(query1, conn1))
+                using (SqlCommand command1 = new SqlCommand(query1, conn1))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlDataReader reader = command1.ExecuteReader())
                     {
-                        int id = reader.GetInt32(reader.GetOrdinal("InventoryLocationID"));
+                        int id = (int)reader.GetInt64(reader.GetOrdinal("InventoryLocationID"));
                         string description = reader.GetString(reader.GetOrdinal("InventoryLocationDescription"));
                         Locations.Add(new Location(description, id));
                     }
-                }
-                */
+                }*/
+
             }
             catch(Exception ex)
             {
+                status.success = false;
                 status.Message = ex.Message;
             }
             foreach(var LOCATION in Locations)
@@ -63,7 +75,7 @@ namespace KentStatePoliceInventory.Controllers
             }
 
             List<InventoryItem> InventoryItems = new List<InventoryItem>();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();
@@ -75,14 +87,14 @@ namespace KentStatePoliceInventory.Controllers
                 cmd.Parameters.Add("@param4", SqlDbType.Int).Value = ItemQuantity;
                 cmd.Parameters.Add("@param5", SqlDbType.Int).Value = ItemReorder;
                 cmd.Parameters.Add("@param6", SqlDbType.Int).Value = 1;
-                cmd.Parameters.Add("@param7", SqlDbType.Int).Value = 1;
+                cmd.Parameters.Add("@param7", SqlDbType.Int).Value = location;
                 cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
               status.success = false;
-                //status.Message = ex.InnerException.ToString();
+            //status.Message = ex.InnerException.ToString();
             }
 
             return Json(status, JsonRequestBehavior.DenyGet);
@@ -91,7 +103,8 @@ namespace KentStatePoliceInventory.Controllers
         public JsonResult RemoveItem(string ItemName)
         {
             MethodStatus status = new MethodStatus();
-            SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
             try
             {
                 conn.Open();

@@ -9,8 +9,9 @@ namespace KentStatePoliceInventory.Models
     {
         public AddRemoveItemsModel()
         {
-          InventoryItems = new List<InventoryItem>();
-          SqlConnection conn = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            InventoryItems = new List<InventoryItem>();
+            Configuration config = new Configuration();
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
           try
           {
               conn.Open();
@@ -39,7 +40,7 @@ namespace KentStatePoliceInventory.Models
           }
 
             Locations = new List<Location>();
-            SqlConnection conn2 = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            SqlConnection conn2 = new SqlConnection(config.ConnectionString());
             try
             {
                 conn2.Open();
@@ -62,7 +63,7 @@ namespace KentStatePoliceInventory.Models
             }
 
             InventoryTypes = new List<string>();
-            SqlConnection conn3 = new SqlConnection("SERVER=IPADDRESS,1433;Database=Inventory;USER ID=Capstone;PASSWORD=abc123");
+            SqlConnection conn3 = new SqlConnection(config.ConnectionString());
             try
             {
                 conn3.Open();

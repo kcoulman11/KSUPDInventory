@@ -1,0 +1,56 @@
+﻿<html>
+	
+    <head>
+	    <title>KSUPD Inventory System</title>
+		<link rel="stylesheet" href="Styles/Main.css">
+		<script type="text/javascript" src="~/Scripts/jquery-3.2.1.js"></script>
+    </head>
+	
+	<body>
+		<div class="header">
+            <h2 id="head-title">Kent State Police Department Inventory Admin Console</h2>
+		</div>
+		
+        <div id="login">
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+            <br><br><br><br>
+			<input type='button' id="view-button" value="View/Update Inventory">
+			<input type='button' id="add-remove-button" value="Add/Remove Items">
+			<br>
+			<br>
+			<input type='button' id="analytics-button" value="View Analytics">
+			<input type='button' id="location-button" value="Add/Remove Locations">
+			<br>
+            <br>
+			<input type='button' id="reports-button" value="Create Reports">
+
+		</div>
+		
+	</body>
+</html>
+
+<script type="text/javascript">
+    $('#view-button').click(function() {
+        location.href += "InventoryView";
+	});
+	
+	$('#add-remove-button').click(function() {
+        location.href += "ItemsView";
+    });
+	
+	$('#analytics-button').click(function() {
+        location.href += "Analytics";
+    });
+	
+	$('#location-button').click(function() {
+        location.href += "Location";
+    });
+
+	$('#reports-button').click(function() {
+        location.href += "Reports";
+    });
+</script>

@@ -130,6 +130,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Models\LocationModel.cs" />
+    <Compile Include="Classes\Configuration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />

@@ -1,0 +1,214 @@
+﻿@model KentStatePoliceInventory.Models.InventoryViewModel
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>KSUPD Analytics</title>
+    <link rel="stylesheet" href="Styles/Main.css">
+    <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+      <body>
+
+        <div class="header">
+		    <select id="table-selector">
+				<option value="1">Storage Room</option> 
+				<option value="2">Armory</option> 
+                <option value="3">Canine</option>
+			</select> 
+            <h2 id="head-title">View and Update Inventory</h2>
+        </div>
+
+        <table id="main-table-display">
+
+          <tr>
+            <th>Item Name</th>
+    	    <th>Item Description</th>
+            <th>Quantity</th>
+    		<th>Reorder Quantity</th>
+            <th>Actions</th>
+          </tr>
+        	@foreach (var item in Model.InventoryItems)
+      		{
+          	  <tr>
+                  <td class="table-item" id="@(item.ItemName)-name" style="text-align: left;">@item.ItemName</td>
+          		  <td class="table-item" id="@(item.ItemName)-description" style="text-align: left;">@item.ItemDescription</td>
+                  <td class="table-item" id="@(item.ItemName)-count" style="text-align: right;">@item.ItemQuantity</td>
+          		  <td class="table-item" id="@(item.ItemName)-reorder" style="text-align: right;">@item.ItemReorder</td>
+                  <td><button id="@(item.ItemName)-plus-one" type="button" class="inventoryButton">+1</button>
+                  <button id="@(item.ItemName)-minus-one" type="button" class="inventoryButton">-1</button>
+                  <input id="@(item.ItemName)-bulk-number" type="number" class="bulkNumber" placeholder="Bulk Update">
+                  <button id="@(item.ItemName)-update" type="button" class="updateButton">Update</button>
+				  <button id="@(item.ItemName)-issue" type="button" class="updateButton">Issue to location</button></td>
+
+			</tr>
+          	}
+        </table>
+      </body>
+
+	  <div id="issue-item-dialog" title="Issue Item">
+        <h3>Location</h3>
+        <select id="new-item-location">
+            @foreach(var location in Model.Locations)
+            {
+                <option value="@(location.LocationName)">@(location.LocationName)</option>          
+            }
+        </select>
+        <h3>Quantity to Issue:</h3>
+        <input  id="issue-item-quantity" type="number" min="0">
+
+        <br><br>
+        <button id="issue-item-submit" type="button">Submit</button>
+      </div>
+</html>
+
+<script type="text/javascript">
+    var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings(){ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore}));
+
+	$('#issue-item-dialog').dialog({
+        autoOpen: false
+    });
+
+    $('[id*="issue"]').click(function(){
+        $('#issue-item-dialog').dialog('open');
+	});
+	
+    $( "#table-selector" ).change(function() {
+        $('#head-title').text($(this).val());
+	    $.ajax({
+            dataType: "json",
+            data: {
+                locationName: $(this).val(),
+            },
+            url: '@Url.Action("LoadLocationData")',
+            type: 'POST',
+            success: function (result) {
+                alert('Quantity Successfully Updated');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("FAIL. GIT GUD SON");
+            }
+        });
+    });
+
+	$('[id*="plus-one"]').click(function() {
+        var count = parseInt($(this).closest('tr').find("[id*='count']").text());
+        count++;
+        $(this).closest('tr').find('[id*="count"]').text(count);
+
+        var nameToUpdate = $(this).closest('tr').first().find("[id*='name']").text();
+	    var updatedQuantity = $(this).closest('tr').first().find("[id*=count]").text();
+
+	    $.ajax({
+            dataType: "json",
+            data: {
+                ItemName: nameToUpdate,
+                ItemQuantity: updatedQuantity
+            },
+            url: '@Url.Action("UpdateQuantities")',
+            type: 'POST',
+            success: function (result) {
+                alert('Quantity Successfully Updated');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("FAIL. GIT GUD SON");
+            }
+        });
+	});
+
+	$('[id*="minus-one"]').click(function() {
+	    if(parseInt($(this).closest('tr').find("[id*='count']").text()) < 1){
+            alert("Count cannot be less than 0");
+	        return;
+	    }
+	    else{
+            count = parseInt($(this).closest('tr').find("[id*='count']").text());
+            count = count - 1;
+            $(this).closest('tr').find("[id*='count']").text(count);
+
+	        if(parseInt($(this).closest('tr').find("[id*='count']").text()) == parseInt($(this).closest('tr').find("[id*='reorder']").text())){
+                alert("Reorder this item soon");
+	        }
+	    }
+
+	    var nameToUpdate = $(this).closest('tr').first().find("[id*='name']").text();
+        var updatedQuantity = $(this).closest('tr').first().find("[id*=count]").text();
+
+        $.ajax({
+            dataType: "json",
+            data: {
+                ItemName: nameToUpdate,
+                ItemQuantity: updatedQuantity
+            },
+            url: '@Url.Action("UpdateQuantities")',
+            type: 'POST',
+            success: function (result) {
+                alert('Quantity Successfully Updated');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("FAIL. GIT GUD SON");
+            }
+        });
+    });
+
+	$('[id*="update"]').click(function() {
+	    if(parseInt($(this).closest('tr').find("[id*='bulk-number']").val()) < 0){
+            alert("Count cannot be less than 0");
+	        return;
+	    }
+	    else{
+            $(this).closest('tr').find("[id*='count']").text(parseInt($(this).closest('tr').find("[id*='bulk-number']").val()));
+	    }
+
+	    if(parseInt($(this).closest('tr').find("[id*='bulk-number']").val()) <= parseInt($(this).closest('tr').find("[id*='reorder']").text())){
+            alert("Reorder this item soon");
+	    }
+
+	    var nameToUpdate = $(this).closest('tr').first().find("[id*='name']").text();
+        var updatedQuantity = $(this).closest('tr').first().find("[id*=count]").text();
+
+        $.ajax({
+            dataType: "json",
+            data: {
+                ItemName: nameToUpdate,
+                ItemQuantity: updatedQuantity
+            },
+            url: '@Url.Action("UpdateQuantities")',
+            type: 'POST',
+            success: function (result) {
+                alert('Quantity Successfully Updated');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("FAIL. GIT GUD SON");
+            }
+        });
+	});
+
+	$('#quantity-submit').on('click', function () {
+        var objectData =
+         {
+             name: $('#Flare-name').text(),
+             quantity: $('#Flare-count').text() ,
+	         reorder: $('#Flare-reorder').text(),
+             description: $('#Flare-description').text()
+         };
+
+	    var objectDataString = JSON.stringify(objectData);
+
+	    $.ajax({
+	    dataType: "json",
+            data: {
+                toSave: objectDataString
+            },
+        url: '@Url.Action("UpdateQuantities")',
+        type: 'POST',
+        success: function (result) {
+             $('#head-title').text("Update Successful");
+            }
+        });
+    });
+</script>
