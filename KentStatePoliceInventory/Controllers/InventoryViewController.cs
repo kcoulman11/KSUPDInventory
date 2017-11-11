@@ -38,7 +38,7 @@ namespace KentStatePoliceInventory.Controllers
             catch (Exception ex)
             {
                 status.success = false;
-                status.Message = ex.InnerException.ToString();
+                status.Message = ex.Message;
             }
 
             return Json(status, JsonRequestBehavior.DenyGet);

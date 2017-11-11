@@ -54,8 +54,45 @@ namespace KentStatePoliceInventory.Models
             }
         }
 
+        public LocationModel(int Id)
+        {
+            Configuration config = new Configuration();
+            LocationID = Id;
+            SqlConnection conn = new SqlConnection(config.ConnectionString());
+            try
+            {
+                conn.Open();
+                string query = @"SELECT Inventory.ItemName, Issued.IssuedQuantity, IssuedTo.IssuedToDescription FROM Issued 
+	                            INNER JOIN Inventory ON Issued.InventoryID = Inventory.InventoryID 
+	                            INNER JOIN IssuedTo  ON IssuedTo.IssuedToID = Issued.IssuedToID
+		                        WHERE IssuedTo.IssuedToID = '" + LocationID + "';";
+
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string ItemName = reader.GetString(reader.GetOrdinal("ItemName"));
+                            int ItemQuantity = reader.GetInt32(reader.GetOrdinal("IssuedQuantity"));
+                            string LocationDescription = reader.GetString(reader.GetOrdinal("IssuedToDescription"));
+                            InventoryItem item = new InventoryItem(ItemName, ItemQuantity, 0, LocationDescription);
+                            Items.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Something
+            }
+        }
+
         public List<Location> Locations { get; set; }
         public List<Location> IssuedToList { get; set; }
+        private int LocationID;
+        public List<InventoryItem> Items = new List<InventoryItem>();
+
     }
 
 }

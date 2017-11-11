@@ -22,7 +22,7 @@
 			<input type='button' id="add-remove-button" value="Add/Remove Items">
 			<br>
 			<br>
-			<input type='button' id="analytics-button" value="View Analytics">
+			<input type='button' id="issued-button" value="View/Update Issued Inventory">
 			<input type='button' id="location-button" value="Add/Remove Locations">
 			<br>
             <br>
@@ -42,8 +42,8 @@
         location.href += "ItemsView";
     });
 	
-	$('#analytics-button').click(function() {
-        location.href += "Analytics";
+	$('#issued-button').click(function() {
+        location.href += "IssuedTo";
     });
 	
 	$('#location-button').click(function() {

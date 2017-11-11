@@ -16,4 +16,18 @@ namespace KentStatePoliceInventory.Classes
         public bool success { get; set; } = true;
         public List<InventoryItem> items = new List<InventoryItem>();
     }
+
+    public class IssuedStatus
+    {
+        public string Message { get; set; } = String.Empty;
+        public bool success { get; set; } = true;
+        public List<IssuedEntry> items = new List<IssuedEntry>();
+    }
+
+    public class ReportStatus
+    {
+        public string Message { get; set; } = String.Empty;
+        public bool success { get; set; } = true;
+        public string ReportLocation = String.Empty;
+    }
 }

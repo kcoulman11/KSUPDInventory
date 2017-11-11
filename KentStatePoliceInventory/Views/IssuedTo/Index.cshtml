@@ -1,0 +1,210 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>KSUPD Inventory</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="Styles/Main.css">
+    <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+    <div class="header" style="text-align: center">
+			<h2 id="head-title">View and Update Issued Inventory</h2>
+      <select id="issued-select" style="width: 25%; height: 25px">
+        <option value="default">Select a location to load the items issued there</option>
+        @foreach(var issuedToLocation in Model.IssuedToLocations)
+        {
+          <option value="@(issuedToLocation.LocationName)">@(issuedToLocation.LocationName)</option>
+        }
+      </select>
+    </div>
+    <br>
+    <table id="main-table-display">
+      <tr>
+        <th>Item Name</th>
+        <th>Quantity Issued</th>
+        <th>Actions</th>
+      </tr>
+      @foreach (var item in Model.IssuedItems)
+      {
+        <tr>
+          <td class="table-item" id="@(item.ItemName)-name" style="text-align: left">@item.ItemName</td>
+          <td class="table-item" id="@(item.ItemName)-count" style="text-align: right">@item.ItemQuantity</td>
+          <td>
+            <button type="button" class="inventoryButton" id="@(item.ItemName)-used">Used</button>
+            <button type="button" class="inventoryButton" id="@(item.ItemName)-return">Return</button>
+            <button type="button" class="inventoryButton" id="@(item.ItemName)-deissue">De-Issue</button>
+            <input id="@(item.ItemName)-take-more" type="number" class="bulkNumber" placeholder="How many are you taking...">
+            <button id="@(item.ItemName)-update" type="button" class="updateButton">Take More</button>
+          </td>
+        </tr>
+      }
+    </table>
+</body>
+</html>
+
+<script type="text/javascript">
+    var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings() {
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    }));
+
+    function UpdateTable(newData){
+        $("#main-table-display").find("tr:gt(0)").remove();
+        newData.items.forEach(function (item) {
+            var markup = "<tr><td class='table-item' id='" + item.ItemName.replace(/\s/g, '') + "-name' style='text-align: left;'>" + item.ItemName + "</td>";
+            markup += "<td class='table-item' id='" + item.ItemName.replace(/\s/g, '') + "-count' style='text-align: right;'>" + item.IssuedQuantity + "</td>";
+            markup += "<td style='text-align:right'><input style='width: 40%' id='" + item.ItemName.replace(/\s/g, '') + "-bulk-number' type='number' class='bulkNumber' placeholder='How many are you taking/returning/using...'>";
+            markup += "<button style='width: 14%' id='" + item.ItemName.replace(/\s/g, '') + "-update' type='button' class='updateButton'>Take More</button>";
+            markup += "<button style='width: 14%' id='" + item.ItemName.replace(/\s/g, '') + "-return' type='button' class='updateButton'>Return</button>";
+            markup += "<button style='width: 14%' id='" + item.ItemName.replace(/\s/g, '') + "-used' type='button' class='updateButton'>Used</button>";
+            markup += "<button style='width: 14%' id='" + item.ItemName.replace(/\s/g, '') + "-deissue' type='button' class='updateButton'>Deissue</button></td></tr>";
+            $('#main-table-display').append(markup);
+        });
+    }
+
+    $('#issued-select').change(function () {
+        $.ajax({
+            dataType: "json",
+            data: {
+                locationName: $(this).val(),
+            },
+            url: '@Url.Action("LoadNewInventoryData")',
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    UpdateTable(result);
+                }
+                else {
+                    alert("Failed to load data. Contact an administrator.")
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            alert("failed to load data");
+            }
+        });
+    });
+
+    $(document).on('click', '[id *= "update"]', function () {
+        var itemName = $(this).closest('tr').find('[id*="name"]').text();
+        var quantity = parseInt($(this).closest('tr').find('[id*="bulk-number"]').val());
+        var locationName = $('#issued-select').val();
+        var oldIssuedQuantity = parseInt($(this).closest('tr').find('[id*="count"]').text());
+        $.ajax({
+            dataType: "json",
+            data: {
+                itemName: itemName,
+                oldIssuedQuantity: oldIssuedQuantity,
+                numberTaken: quantity,
+                location: locationName
+            },
+            url: '@Url.Action("UpdateIssuedQuantity")',
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    alert("Failed to update data. Please contact an administrator")
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            alert("failed to load data");
+            }
+        });
+    });
+
+    $(document).on('click', '[id *= "return"]', function () {
+        var itemName = $(this).closest('tr').find('[id*="name"]').text();
+        var quantity = parseInt($(this).closest('tr').find('[id*="bulk-number"]').val());
+        var locationName = $('#issued-select').val();
+        var oldIssuedQuantity = parseInt($(this).closest('tr').find('[id*="count"]').text());
+        $.ajax({
+            dataType: "json",
+            data: {
+                itemName: itemName,
+                numberToReturn: quantity,
+                oldIssuedQuantity: oldIssuedQuantity,
+                location: locationName
+            },
+            url: '@Url.Action("ReturnItem")',
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    alert("Failed to update data. Please contact an administrator")
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            alert("failed to load data");
+            }
+        });
+    });
+
+    $(document).on('click', '[id *= "used"]', function () {
+        var itemName = $(this).closest('tr').find('[id*="name"]').text();
+        var quantity = parseInt($(this).closest('tr').find('[id*="bulk-number"]').val());
+        var locationName = $('#issued-select').val();
+        var oldIssuedQuantity = parseInt($(this).closest('tr').find('[id*="count"]').text());
+        $.ajax({
+            dataType: "json",
+            data: {
+                itemName: itemName,
+                numberToReturn: quantity,
+                oldIssuedQuantity: oldIssuedQuantity,
+                location: locationName
+            },
+            url: '@Url.Action("UsedItem")',
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    alert("Failed to update data. Please contact an administrator")
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            alert("failed to load data");
+            }
+        });
+    });
+
+    $(document).on('click', '[id *= "deissue"]', function () {
+        var itemName = $(this).closest('tr').find('[id*="name"]').text();
+        var locationName = $('#issued-select').val();
+        var oldIssuedQuantity = parseInt($(this).closest('tr').find('[id*="count"]').text());
+        $.ajax({
+            dataType: "json",
+            data: {
+                itemName: itemName,
+                oldIssuedQuantity: oldIssuedQuantity,
+                locationName: locationName
+            },
+            url: '@Url.Action("DeissueItem")',
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    alert("Failed to update data. Please contact an administrator")
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            alert("failed to load data");
+            }
+        });
+    });
+
+</script>

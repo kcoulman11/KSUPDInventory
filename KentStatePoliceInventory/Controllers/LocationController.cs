@@ -86,9 +86,29 @@ namespace KentStatePoliceInventory.Controllers
                 using (var cmd = conn.CreateCommand())
                 {
                     conn.Open();
-                    cmd.CommandText = "DELETE FROM InventoryLocation WHERE InventoryLocationDescription = @word";
-                    cmd.Parameters.AddWithValue("@word", locationName);
-                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "SELECT InventoryLocationID FROM InventoryLocation Where InventoryLocationDescription = @location";
+                    cmd.Parameters.AddWithValue("location", locationName);
+                    string str = Convert.ToString(cmd.ExecuteScalar());
+                    int locationid = Int32.Parse(str);
+                    int hasinventory = 0;
+                    cmd.CommandText = "SELECT COUNT (InventoryLocationID) FROM Inventory WHERE InventoryLocationID = @param1";
+                    cmd.Parameters.AddWithValue("@param1", locationid);
+                    string str2 = Convert.ToString(cmd.ExecuteScalar());
+                    hasinventory = Int32.Parse(str2);
+
+                    if (hasinventory == 0)
+                    {
+
+                        cmd.CommandText = "DELETE FROM InventoryLocation WHERE InventoryLocationDescription = @word";
+                        cmd.Parameters.AddWithValue("@word", locationName);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        status.success = false;
+                        status.Message = "Cannot remove location with items in it";
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -111,9 +131,27 @@ namespace KentStatePoliceInventory.Controllers
                 using (var cmd = conn.CreateCommand())
                 {
                     conn.Open();
-                    cmd.CommandText = "DELETE FROM IssuedTo WHERE IssuedToDescription = @word";
-                    cmd.Parameters.AddWithValue("@word", locationName);
-                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "SELECT IssuedToID FROM IssuedTo Where IssuedtoDescription = @issuedlocation";
+                    cmd.Parameters.AddWithValue("issuedlocation", locationName);
+                    string str = Convert.ToString(cmd.ExecuteScalar());
+                    int locationid = Int32.Parse(str);
+                    int hasinventory = 0;
+                    cmd.CommandText = "SELECT COUNT (IssuedToID) FROM Issued WHERE IssuedtoID = @param1";
+                    cmd.Parameters.AddWithValue("@param1", locationid);
+                    string str2 = Convert.ToString(cmd.ExecuteScalar());
+                    hasinventory = Int32.Parse(str2);
+
+                    if (hasinventory == 0)
+                    {
+                        cmd.CommandText = "DELETE FROM IssuedTo WHERE IssuedToDescription = @word";
+                        cmd.Parameters.AddWithValue("@word", locationName);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        status.success = false;
+                        status.Message = "Cannot remove location with items issued to it";
+                    }
                 }
             }
             catch (Exception ex)

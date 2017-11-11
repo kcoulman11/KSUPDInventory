@@ -1,44 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-//using ceTe.DynamicPDF;
-//using ceTe.DynamicPDF.PageElements;
-using System.IO;
+﻿using System.Web.Mvc;
 using KentStatePoliceInventory.Classes;
-using KentStatePoliceInventory.Models;
 
 namespace KentStatePoliceInventory.Controllers
 {
     public class ReportsController : Controller
     {
-        //// Testing the pdfGenerator DLL
-        //private Template template = new Template();
-        //private static PageDimensions pageDimensions = new PageDimensions(PageSize.Letter, PageOrientation.Portrait, 54.0f);
-        //public Document document;
-        //private float currentY = 0;
-        //private bool alternateBG = false;
-        //private Page currentPage = null;
-        //private float bodyTop = 38;
-        //private float bodyBottom = pageDimensions.Body.Bottom - pageDimensions.Body.Top;
-
         public ActionResult Index()
         {
             return View();
         }
 
-        //// Put all C# code in here that will be called from the view
-        //public object MonthlyReport()
-        //{
-        //    var newReport = new InventoryReport();
-        //    if (!newReport.RunReport()) return null;
-        //    else return true;
-        //}   
+        public JsonResult InventoryReport()
+        {
+            var newReport = new InventoryReport();
+            var status = new ReportStatus();
+            status.ReportLocation = newReport.RunReport();
+            if (string.IsNullOrWhiteSpace(status.ReportLocation)) status.success = false;
+            else status.success = true;
 
-        //public object GunReport()
-        //{
-        //    return new object();
-        //}    
+            return Json(status, JsonRequestBehavior.DenyGet);
+        }
+
+        public JsonResult SendMail(string reportLocation)
+        {
+            var mail = new MailReport();
+            MethodStatus status = new MethodStatus();
+            if (string.IsNullOrWhiteSpace(reportLocation)) status.success = false;
+            else status.success = mail.SendReport(reportLocation);
+
+            return Json(status, JsonRequestBehavior.DenyGet);
+        }
+
+        public JsonResult LocationReport()
+        {
+            var locationReport = new InventoryLocationReport();
+            var status = new ReportStatus();
+            status.ReportLocation = locationReport.RunReport();
+            if (string.IsNullOrWhiteSpace(status.ReportLocation)) status.success = false;
+            else status.success = true;
+
+            return Json(status, JsonRequestBehavior.DenyGet);
+        }
+
+        public JsonResult GunReport()
+        {
+            var GunReport = new GunReport();
+            var status = new ReportStatus();
+            status.ReportLocation = GunReport.RunReport();
+            if (string.IsNullOrWhiteSpace(status.ReportLocation)) status.success = false;
+            else status.success = true;
+
+            return Json(status, JsonRequestBehavior.DenyGet);
+        }
     }
 }

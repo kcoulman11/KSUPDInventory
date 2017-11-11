@@ -219,3 +219,5 @@ C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePolice
 C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.csproj.CoreCompileInputs.cache
 C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.dll
 C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\obj\Debug\KentStatePoliceInventory.pdb
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\ceTe.DynamicPDF.40.dll
+C:\Users\Kevin\Google Drive\Programs\Capstone\KSUPDInventory (1)\KentStatePoliceInventory\bin\ceTe.DynamicPDF.40.xml

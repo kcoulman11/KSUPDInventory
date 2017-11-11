@@ -107,7 +107,7 @@
         dataType: "json",
 	    data: {
             issuedTo: $('#new-item-location').val(),
-	        quantity: parseInt($('#issue-item-quantity').val()),
+	          quantity: parseInt($('#issue-item-quantity').val()),
             itemName: $('#issued-item').val()
 	    },
 	    url: '@Url.Action("IssueItem")',
@@ -115,14 +115,14 @@
 	    success: function(result){
             alert("Successfully issued item to " + $('#new-item-location').val());
             location.reload();
-            $('.ui-icon-closethick').trigger('click'); 
+            $('.ui-icon-closethick').trigger('click');
 	    },
 	    error: function(xhr, ajaxOptions, thrownError) {
             alert("failed to issue item");
 	    }
 	});
   });
-	
+
   $("#table-selector").change(function() {
     $('#head-title').text($(this).val());
     $.ajax({
@@ -145,23 +145,23 @@
         if ($(this).val() == "default") {
             location.reload();
         }
-    $.ajax({
-      dataType: "json",
-      data: {
-        locationName: $(this).val(),
-      },
-      url: '@Url.Action("LoadNewInventoryData")',
-      type: 'POST',
-      success: function(result) {
-        UpdateTable(result);
-      },
-      error: function(xhr, ajaxOptions, thrownError) {
-        alert("failed to load data");
-      }
-    });
+        $.ajax({
+          dataType: "json",
+          data: {
+            locationName: $(this).val(),
+          },
+          url: '@Url.Action("LoadNewInventoryData")',
+          type: 'POST',
+          success: function(result) {
+            UpdateTable(result);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert("failed to load data");
+          }
+        });
     });
 
-    $(document).on('click', '[id *= "plus-one"]', function () { 
+    $(document).on('click', '[id *= "plus-one"]', function () {
         var count = parseInt($(this).closest('tr').find("[id*='count']").text());
         count++;
         $(this).closest('tr').find('[id*="count"]').text(count);

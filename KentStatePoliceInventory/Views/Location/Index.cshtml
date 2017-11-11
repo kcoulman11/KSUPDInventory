@@ -1,4 +1,4 @@
-﻿﻿@model KentStatePoliceInventory.Models.LocationModel
+﻿﻿﻿@model KentStatePoliceInventory.Models.LocationModel
 
 <!DOCTYPE html>
 <html>
@@ -99,7 +99,13 @@
         url: '@Url.Action("RemoveLocation")',
         type: 'POST',
         success: function(result) {
-          alert('Location successfully removed');
+	      if(result.success == true){
+            alert("Location successfully removed");
+            location.reload();
+          }
+          else{
+            alert(result.Message);
+          }
           location.reload();
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -122,13 +128,13 @@ $('[id*="issueremove"]').click(function() {
         url: '@Url.Action("RemoveIssue")',
         type: 'POST',
         success: function(result) {
-	      if(result.success){
-            alert('Location successfully removed');
+	      if(result.success == true){
+              alert("Location successfully removed");
+              location.reload();
 	      }
           else{
-           alert(result.Message);
-	      }
-          location.reload();
+            alert(result.Message);
+          }
         },
         error: function(xhr, ajaxOptions, thrownError) {
           alert("FAIL. GIT GUD SON");

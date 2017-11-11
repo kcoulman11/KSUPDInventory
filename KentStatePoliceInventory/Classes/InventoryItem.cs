@@ -9,12 +9,14 @@ namespace KentStatePoliceInventory.Classes
             ItemDescription = String.Empty;
             ItemQuantity = 10;
         }
+
         public InventoryItem(string name, int quantity, int reorder, string description = ""){
             ItemName = name;
             ItemQuantity = quantity;
             ItemDescription = description;
             ItemReorder = reorder;
         }
+
         public InventoryItem(string name, int quantity, int reorder, string description, int typeid, int locationid, int itemid)
         {
           ItemName = name;
@@ -26,6 +28,15 @@ namespace KentStatePoliceInventory.Classes
           ItemId = itemid;
         }
 
+        public InventoryItem(string name, int quantity, int reorder, string description = "", string gunserial = "")
+        {
+            ItemName = name;
+            ItemQuantity = quantity;
+            ItemDescription = description;
+            ItemReorder = reorder;
+            SerialNumber = gunserial;
+        }
+
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
         public int ItemId { get; set; }
@@ -33,5 +44,6 @@ namespace KentStatePoliceInventory.Classes
         public int ItemReorder { get; set; }
         public int TypeId { get; set;}
         public int LocationId { get; set; }
+        public string SerialNumber { get; set; }
     }
 }

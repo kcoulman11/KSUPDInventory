@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     Layout = null;
 }
 
@@ -9,62 +9,112 @@
     <link rel="stylesheet" href="Styles/Main.css">
     <script type="text/javascript" src="Scripts/jquery-3.2.1.js"></script>
 </head>
-    <body>
-    	<div class="header">
-          <h2 id="head-title">Create Reports</h2>
-        </div>
+<body>
+    <div class="header">
+        <h2 id="head-title">Create Reports</h2>
+    </div>
 
-		<div id="login">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br><br><br><br>
-            <input type='button' id="weekly-button" value="Run Weekly Report">
-            <input type='button' id="gun-button" value="Run Gun Report">
-            <input type='button' id="monthly-report-button" value="Run Monthly Report">
-        </div>
-		
-    </body>
+    <div id="login">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br><br><br><br>
+        <input type='button' id="location-button" value="Run Location Report">
+        <input type='button' id="gun-button" value="Run Gun Report">
+        <input type='button' id="monthly-report-button" value="Run Monthly Report">
+    </div>
+
+</body>
 </html>
 
 <script type="text/javascript">
-    $('#weekly-button').click(function() {
-        alert("to be implemented");
-	    //document.location = baselocation + "?report=weekly"
-    });
-
-    // In the View
-    $('#monthly-report-button').on('click', function () {
+    $('#location-button').click(function () {
         $.ajax({
-         //   dataType: "json",
-            url: '@Url.Action("MonthlyReport")',
-         //   type: 'POST',
+            dataType: "json",
+            url: '@Url.Action("LocationReport")',
+            type: 'POST',
             success: function (result) {
-                alert('Report Sucessfully Run');
+                if (result.success) {
+                    if (confirm("Report created. Would you like to email the report?")) {
+                        $.ajax({
+                            dataType: "json",
+                            data: { reportLocation: result.ReportLocation },
+                            url: '@Url.Action("SendMail")',
+                            type: 'POST',
+                            success: function (result) {
+                                alert('Report Successfully Sent');
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("Failed to send location report");
+                            }
+                        });
+                    }
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert("Failed to run report. Suks2suk.");
+                alert("Failed to run report");
+            }
+        });
+    });
+
+    $('#monthly-report-button').on('click', function () {
+        $.ajax({
+            dataType: "json",
+            url: '@Url.Action("InventoryReport")',
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    if (confirm("Report created. Would you like to email the report?")) {
+                        $.ajax({
+                            dataType: "json",
+                            data: { reportLocation: result.ReportLocation },
+                            url: '@Url.Action("SendMail")',
+                            type: 'POST',
+                            success: function (result) {
+                                alert('Report Successfully Sent');
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("Failed to send inventory report");
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("Failed to run report");
             }
         });
     });
 
     $('#gun-button').on('click', function () {
         $.ajax({
-            //   dataType: "json",
+            dataType: "json",
             url: '@Url.Action("GunReport")',
-            //   type: 'POST',
+            type: 'POST',
             success: function (result) {
-                alert('Report Sucessfully Run');
+                if (result.success) {
+                    if (confirm("Report created. Would you like to email this report?")) {
+                        $.ajax({
+                            dataType: "json",
+                            data: { reportLocation: result.ReportLocation },
+                            url: '@Url.Action("SendMail")',
+                            type: 'POST',
+                            success: function (result) {
+                                alert('Report Successfully Sent');
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("Failed to send gun report");
+                            }
+                        });
+                    }
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert("Failed to run report. Suks2suk.");
+                alert("Failed to run report");
             }
         });
     });
 
-	$('#monthly-button').click(function() {
-        alert("to be implemented");
-    });
 </script>

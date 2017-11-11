@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ceTe.DynamicPDF.40, Version=8.0.0.40, Culture=neutral, PublicKeyToken=09b5ce0d5c0a9d8b, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicPDF.8.0.0.0\lib\net40\ceTe.DynamicPDF.40.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -110,7 +113,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Classes\GunReport.cs" />
+    <Compile Include="Classes\InventoryLocationReport.cs" />
+    <Compile Include="Classes\InventoryReport.cs" />
+    <Compile Include="Classes\IssuedEntry.cs" />
+    <Compile Include="Classes\MailReport.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IssuedToController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -123,6 +132,7 @@
     <Compile Include="Models\InventoryViewModel.cs" />
     <Compile Include="Classes\InventoryItem.cs" />
     <Compile Include="Classes\User.cs" />
+    <Compile Include="Models\IssuedToModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\AddRemoveItemsModel.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
@@ -202,6 +212,7 @@
   <ItemGroup>
     <None Include="Scripts\jquery-3.2.1.slim.min.map" />
     <None Include="Scripts\jquery-3.2.1.min.map" />
+    <Content Include="Views\IssuedTo\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

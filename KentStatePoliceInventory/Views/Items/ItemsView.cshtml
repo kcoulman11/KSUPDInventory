@@ -45,6 +45,13 @@
 </body>
 
 <div id="add-item-dialog" title="Add New Item">
+    <h3>Inventory Type</h3>
+    <select id="new-item-type">
+        @foreach (var type in Model.InventoryTypes)
+        {
+            <option value="@(type)-val">@(type)</option>
+        }
+    </select>
 	<h3>Location</h3>
     <select id="new-item-location">
         @foreach(var location in Model.Locations)
@@ -56,23 +63,42 @@
 	<input id="new-item-name" type="text">
     <h3>Item Description</h3>
     <input id="new-item-description" type="text">
-	<h3>Current Quantity</h3>
-    <input  id="new-item-quantity" type="number" min="0">
-	<h3>Reorder Notification Quantity</h3>
-    <input id="new-item-reorder" type="number" min="0">
-	<br>
-	<h3>Inventory Type</h3>
-    <select id="new-item-type">
-        @foreach(var type in Model.InventoryTypes)
-        {
-            <option value="@(type)-val">@(type)</option>          
-        }
-    </select>
+    <div id="new-item-quantites">
+        <h3>Current Quantity</h3>
+        <input id="new-item-quantity" type="number" min="0">
+        <h3>Reorder Notification Quantity</h3>
+        <input id="new-item-reorder" type="number" min="0">
+    </div>
+	<br>   
+    <div id="gun-serial">
+        <br />
+        <h3>Gun Serial Number: </h3>
+        <input id="new-gun-serial" type="text" />
+    </div>
+    
 	<br><br>
 	<button id="add-item-submit" type="button">Submit</button>
 </div>
+</html>
 
 <script type="text/javascript">
+    $(function () {
+        $('#gun-serial').hide();
+    });
+
+    $('#new-item-type').on('change', function () {
+        if ($(this).val() == "Guns -val") {
+            $('#gun-serial').show();
+            $('#new-item-quantites').hide();
+            $('#new-item-quantity').val("1");
+            $('#new-item-reorder').val("0");
+        }
+        else {
+            $('#gun-serial').hide();
+            $('#new-item-quantites').show();
+        }
+    });
+
     $('[id*="remove"]').click(function(){
 		var currentRow = $(this);
         if(confirm("Remove " + $(this).closest('tr').find("[id*='name']").text() + "?")){
@@ -86,8 +112,13 @@
                 url: '@Url.Action("RemoveItem")',
                 type: 'POST',
                 success: function (result) {
-                    alert('Item successfully removed');
-                    currentRow.closest('tr').remove();
+                    if (result.success) {
+                        alert('Item successfully removed');
+                        currentRow.closest('tr').remove();
+                    }
+                    else {
+                        alert(result.Message);
+                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert("FAIL. GIT GUD SON");
@@ -118,7 +149,8 @@
         var newItemQuantity = $('#new-item-quantity').val();
         var newItemReorder = $('#new-item-reorder').val();
 		var newItemLocation = $('#new-item-location').val();
-		var newItemType = $('#new-item-type').val();
+		var newItemType = $('#new-item-type :selected').text();
+        var newGunSerial = $('#new-gun-serial').val();
 
         $.ajax({
             dataType: "json",
@@ -128,7 +160,8 @@
                 ItemReorder: parseInt(newItemReorder),
                 ItemDescription: newItemDescription,
 		        ItemLocation: newItemLocation,
-		        ItemType: newItemType,
+                ItemType: newItemType,
+                GunSerial: newGunSerial
             },
             url: '@Url.Action("AddNewItem")',
             type: 'POST',
