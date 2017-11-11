@@ -12,7 +12,7 @@ namespace KentStatePoliceInventory.Classes
 
         public string FromAddress = "bsteige1@kent.edu";
         public string MailUser = "bsteige1";
-        public string MailPassword = "Benny303"; // My mom made it and I never changed it. Get over it
+        public string MailPassword = "password"; // My mom made it and I never changed it. Get over it
         public List<string> ToAddresses = new List<string> { "bsteige1@kent.edu" };
 
         public Configuration()
