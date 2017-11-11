@@ -17,7 +17,7 @@ namespace KentStatePoliceInventory.Classes
 
         public Configuration()
         {
-            IPAddress = "173.88.245.82,1433";
+            IPAddress = "no.88.245.82,1433";
             Database = "Inventory";
             User = "Capstone";
             Password = "abc123";
