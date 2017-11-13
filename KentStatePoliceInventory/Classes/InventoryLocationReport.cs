@@ -31,6 +31,7 @@ namespace KentStatePoliceInventory.Classes
             document.Author = "Capstone Team";
             document.Title = "Location Inventory Report";
             InventoryViewModel model = new InventoryViewModel();
+            Configuration config = new Configuration();
 
             SetTemplate();
             document.Template = template;
@@ -39,7 +40,7 @@ namespace KentStatePoliceInventory.Classes
             try
             {
                 var today = DateTime.Today.ToString("MMM-dd-yyyy");
-                output = "C:\\test\\LocationReport - " + today + ".pdf";
+                output = config.ReportSaveLocation + "LocationReport - " + today + ".pdf";
                 var stream = new FileStream(output, FileMode.Create, FileAccess.Write);
                 document.Draw(stream);
                 stream.Close();

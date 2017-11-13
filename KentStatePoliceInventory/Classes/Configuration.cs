@@ -10,10 +10,12 @@ namespace KentStatePoliceInventory.Classes
         public string User = String.Empty;
         public string Password = String.Empty;
 
-        public string FromAddress = "bsteige1@kent.edu";
-        public string MailUser = "bsteige1";
+        public string FromAddress = "test@kent.edu";
+        public string MailUser = "test";
         public string MailPassword = "password"; // My mom made it and I never changed it. Get over it
-        public List<string> ToAddresses = new List<string> { "bsteige1@kent.edu" };
+        public List<string> ToAddresses = new List<string> { "kcoulman889@gmail.com" };
+
+        public string ReportSaveLocation = "C:\\test\\";
 
         public Configuration()
         {
